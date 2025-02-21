@@ -1,20 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navigationItems = [
+    { name: "À propos", href: "#about" },
+    { name: "Formation", href: "#education" },
+    { name: "Expérience", href: "#experience" },
+    { name: "Projets", href: "#projects" },
+    { name: "Contact", href: "#contact" }
+  ];
 
   return (
-    <header className="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm">
+    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-white/90 backdrop-blur-lg shadow-sm' : 'bg-transparent'
+    }`}>
       <nav className="container mx-auto px-4">
         <div className="relative flex items-center justify-between h-16">
-          <a href="#" className="text-2xl font-bold text-eco-green">
-            Temey
+          {/* Logo */}
+          <a href="#" className="text-2xl font-bold text-eco-green flex items-center gap-2">
+            <div className="w-8 h-8 bg-eco-green rounded-full flex items-center justify-center">
+              <span className="text-white text-sm font-bold">TF</span>
+            </div>
+            <span className={`transition-opacity duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}>
+              Temey Faïnou
+            </span>
           </a>
 
-          {/* Menu mobile */}
+          {/* Menu mobile button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md text-eco-green hover:bg-gray-100 focus:outline-none"
+            className="md:hidden p-2 rounded-md text-eco-green hover:bg-eco-green/5 focus:outline-none"
+            aria-label="Menu principal"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -26,78 +53,37 @@ const Header = () => {
             </svg>
           </button>
 
-          {/* Menu desktop */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#about" className="text-gray-600 hover:text-eco-green transition-colors">
-              À propos
-            </a>
-            <a href="#experience" className="text-gray-600 hover:text-eco-green transition-colors">
-              Expérience
-            </a>
-            <a href="#education" className="text-gray-600 hover:text-eco-green transition-colors">
-              Formation
-            </a>
-            <a href="#skills" className="text-gray-600 hover:text-eco-green transition-colors">
-              Compétences
-            </a>
-            <a href="#projects" className="text-gray-600 hover:text-eco-green transition-colors">
-              Projets
-            </a>
-            <a href="#contact" className="text-gray-600 hover:text-eco-green transition-colors">
-              Contact
-            </a>
+            {navigationItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-gray-600 hover:text-eco-green transition-colors duration-300"
+              >
+                {item.name}
+              </a>
+            ))}
           </div>
+        </div>
 
-          {/* Menu mobile overlay */}
-          <div 
-            className={`md:hidden absolute left-0 right-0 bg-white shadow-lg transition-transform duration-200 ease-in-out transform ${
-              isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-            }`}
-          >
-            <div className="px-2 pt-2 pb-3 space-y-1">
+        {/* Mobile Navigation */}
+        <div
+          className={`md:hidden absolute top-full left-0 right-0 bg-white/90 backdrop-blur-lg shadow-lg transition-transform duration-300 ease-in-out transform ${
+            isMenuOpen ? 'translate-y-0' : '-translate-y-full'
+          }`}
+        >
+          <div className="px-4 py-2 space-y-1">
+            {navigationItems.map((item) => (
               <a
-                href="#about"
-                className="block px-3 py-2 rounded-md text-gray-600 hover:text-eco-green hover:bg-gray-50 transition-colors"
+                key={item.name}
+                href={item.href}
+                className="block px-3 py-2 rounded-md text-gray-600 hover:text-eco-green hover:bg-eco-green/5 transition-colors duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
-                À propos
+                {item.name}
               </a>
-              <a
-                href="#experience"
-                className="block px-3 py-2 rounded-md text-gray-600 hover:text-eco-green hover:bg-gray-50 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Expérience
-              </a>
-              <a
-                href="#education"
-                className="block px-3 py-2 rounded-md text-gray-600 hover:text-eco-green hover:bg-gray-50 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Formation
-              </a>
-              <a
-                href="#skills"
-                className="block px-3 py-2 rounded-md text-gray-600 hover:text-eco-green hover:bg-gray-50 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Compétences
-              </a>
-              <a
-                href="#projects"
-                className="block px-3 py-2 rounded-md text-gray-600 hover:text-eco-green hover:bg-gray-50 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Projets
-              </a>
-              <a
-                href="#contact"
-                className="block px-3 py-2 rounded-md text-gray-600 hover:text-eco-green hover:bg-gray-50 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact
-              </a>
-            </div>
+            ))}
           </div>
         </div>
       </nav>
