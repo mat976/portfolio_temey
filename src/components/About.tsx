@@ -41,9 +41,9 @@ const About = () => {
       }
     ],
     contactInfo: {
-      phone: "(+262) 692407174",
-      email: "fainou.temey25@gmail.com",
-      location: "14 Rue Suffren, 97410 Saint Pierre (France)"
+      phone: "(+262) 69244",
+      email: "fainou.temey5@gmail.com",
+      location: "Rue Suffren, 97410 Saint Pierre (Réunion)"
     }
   };
 
