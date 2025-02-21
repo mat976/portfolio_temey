@@ -4,6 +4,8 @@ import Hero from './components/Hero'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
 import Contact from './components/Contact'
+import Experience from './components/Experience'
+import Education from './components/Education'
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <Header />
       <main className="flex-1 pt-16">
         <Hero />
+        <Experience />
+        <Education />
         <Skills />
         <Projects />
         <Contact />
